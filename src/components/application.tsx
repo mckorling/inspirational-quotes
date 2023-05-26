@@ -21,7 +21,6 @@ export const fetchQuotes = async (count: number) => {
 
 const Application = () => {
   // const [quote, setQuote] = useState<Quote | undefined>(); // we don't know what a quote is yet, so need to pass in options
-  const [number, setNumber] = useState(10);
   const [quotes, setQuotes] = useState<Quote[]>([]); // can't just pass in an empty array like in js (without a template)
   // it will say it's a type never, it needs to know what goes in the array
 
@@ -30,21 +29,12 @@ const Application = () => {
   //   fetchRandomQuote().then(setQuote);
   // }, []);
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const quotesResponse = await fetchQuotes(number);
-  //   setQuotes(quotesResponse);
-  // };
-
   // if (!quote) return <Loading />;
   // now quote definitely exists, so can access it's properties
   return (
     <main className="mx-auto w-full max-w-2xl py-16">
       {/* <InspirationalQuote content={quote.content} source={quote.source} /> */}
-      <Quotes
-        count={number}
-        onSubmit={() => fetchQuotes(number).then(setQuotes)}
-      >
+      <Quotes setQuotes={setQuotes}>
         <div className="grid grid-cols-2 gap-4">
           {quotes.map((quote) => {
             return (

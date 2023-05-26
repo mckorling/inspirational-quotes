@@ -4,26 +4,21 @@ import {
   PropsWithChildren,
   useState,
 } from 'react';
+import { Quote, fetchQuotes } from './application';
 
 type QuotesProps = {
-  count: number;
-  onSubmit: FormEventHandler<HTMLFormElement>;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  // setQuotes: ;
+  setQuotes: React.Dispatch<React.SetStateAction<Quote[]>>;
 };
 
-const Quotes = ({
-  children,
-  count,
-  onSubmit,
-  onChange,
-}: PropsWithChildren<QuotesProps>) => {
+const Quotes = ({ children, setQuotes }: PropsWithChildren<QuotesProps>) => {
+  const [number, setNumber] = useState(10);
+
   return (
     <section className="flex flex-col gap-8">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit(e);
+          fetchQuotes(number).then(setQuotes);
         }}
       >
         <label htmlFor="number-of-quotes-to-load" className="block">
@@ -36,8 +31,8 @@ const Quotes = ({
             type="number"
             min="0"
             max="25"
-            value={count}
-            onChange={onChange}
+            value={number}
+            onChange={(e) => setNumber(e.target.valueAsNumber)}
           />
           <button type="submit">Load Quotes</button>
         </div>
