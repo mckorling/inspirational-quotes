@@ -20,19 +20,43 @@ export const fetchQuotes = async (count: number) => {
 };
 
 const Application = () => {
-  const [quote, setQuote] = useState();
+  // const [quote, setQuote] = useState<Quote | undefined>(); // we don't know what a quote is yet, so need to pass in options
+  const [number, setNumber] = useState(10);
+  const [quotes, setQuotes] = useState<Quote[]>([]); // can't just pass in an empty array like in js (without a template)
+  // it will say it's a type never, it needs to know what goes in the array
 
-  useEffect(() => {
-    fetchRandomQuote().then(setQuote);
-  }, []);
+  // swap from one quote to multiple quotes, don't need useEffect now
+  // useEffect(() => {
+  //   fetchRandomQuote().then(setQuote);
+  // }, []);
 
-  if (!quote) return <Loading />;
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const quotesResponse = await fetchQuotes(number);
+  //   setQuotes(quotesResponse);
+  // };
+
+  // if (!quote) return <Loading />;
+  // now quote definitely exists, so can access it's properties
   return (
-    <main className="w-full max-w-2xl py-16 mx-auto">
+    <main className="mx-auto w-full max-w-2xl py-16">
       {/* <InspirationalQuote content={quote.content} source={quote.source} /> */}
-      {/* <Quotes>
-        <div className="grid grid-cols-2 gap-4"></div>
-      </Quotes> */}
+      <Quotes
+        count={number}
+        onSubmit={() => fetchQuotes(number).then(setQuotes)}
+      >
+        <div className="grid grid-cols-2 gap-4">
+          {quotes.map((quote) => {
+            return (
+              <InspirationalQuote
+                key={quote.id}
+                source={quote.source}
+                content={quote.content}
+              ></InspirationalQuote>
+            );
+          })}
+        </div>
+      </Quotes>
     </main>
   );
 };
